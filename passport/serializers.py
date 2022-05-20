@@ -9,8 +9,8 @@ STATUS_CHOICES = (
 )
 
 class PassportSerializer(serializers.Serializer):
-    series = serializers.CharField(max_length=4)
-    number = serializers.CharField(max_length=6)
+    series = serializers.CharField(max_length=4, min_length=4)
+    number = serializers.CharField(max_length=6, min_length=6)
 
 
 class TerroristSerializer(serializers.Serializer):

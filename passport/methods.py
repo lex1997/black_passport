@@ -21,7 +21,7 @@ def check_person_rfm(lastname: str, name: str, middlename: str, dob: str):
     return not Terrorist.objects.filter(name=full_name, birthday=dob).exists()
 
 
-def check_person_fms(cid: int, series: str, number: str):
+def check_person_fms(series: str, number: str):
     """ Проверяет паспорт по базе ФМС(таблица FMS).
         Возвращает булевый признак. (True == Проверка пройдена, паспорт валидный)
     """

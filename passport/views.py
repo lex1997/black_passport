@@ -28,13 +28,21 @@ def upload_fms_handler(request):
 
 class RosFinMon(APIView):
     def post(self, request):
+        """
+        Вызывает проверку пользователя по реестру Росфинмониторинг по средством post запроса
+        """
         serilizer = TerroristSerializer(data=request.data)
         serilizer.is_valid(raise_exception=True)
 
-        # lastname: str,
-        # name: str,
-        # middlename:
-        return Response({'data': check_person_rfm(request.data['lastname'], request.data['name'], request.data['middlename'], request.data['birthday'])})
+        if check_person_rfm(request.data['lastname'],
+                            request.data['name'],
+                            request.data['middlename'],
+                            request.data['birthday']):
+            result = 'не террорист'
+        else:
+            result = 'террорист'
+
+        return Response({f'Результат проверки: Человек {result}'})
 
 
 class FedMigServ(APIView):
@@ -45,4 +53,9 @@ class FedMigServ(APIView):
         serilizer = PassportSerializer(data=request.data)
         serilizer.is_valid(raise_exception=True)
 
-        return Response({'data': check_person_fms(request.data['series'], request.data['number'])})
+        if check_person_fms(request.data['series'], request.data['number']):
+            result = 'действительный'
+        else:
+            result = 'недействительный'
+
+        return Response({f'Результат проверки: Паспорт {result}'})

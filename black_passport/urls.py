@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-
 from passport.views import upload_rfm_handler, upload_fms_handler, RosFinMon, FedMigServ
 
 urlpatterns = [
@@ -25,4 +24,5 @@ urlpatterns = [
     path('passport/upload_fms', upload_fms_handler),
     path('passport/rfm', RosFinMon.as_view()),
     path('passport/fms', FedMigServ.as_view()),
+
 ]

@@ -1,7 +1,7 @@
 import csv
 import re
 from datetime import datetime
-
+import os
 import requests
 from bs4 import BeautifulSoup
 from django.db.models.query_utils import Q
@@ -34,6 +34,8 @@ def upload_list_rfm(data_file_path='passport/data/RFM.csv'):
 
             _archive_terrorists(names, birthdays)
 
+        os.remove(data_file_path)
+
         return {'result': 'successful'}
     except IOError as e:
         return {'result': 'error', 'reasons': str(e)}
@@ -54,7 +56,8 @@ def get_html(url):
         'Host': 'fedsfm.ru',
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
     }
-    r = requests.get(url, headers=headers)
+
+    r = requests.get(url, headers=headers, verify=False)
     return r.text
 
 
