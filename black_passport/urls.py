@@ -17,11 +17,12 @@ from django.contrib import admin
 from django.urls import path
 
 # from passport.views import BlackPassportAPIView
-from passport.views import upload_rfm_handler, upload_fms_handler
+from passport.views import upload_rfm_handler, upload_fms_handler, RosFinMon
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('api/', BlackPassportAPIView),
     path('passport/upload_rfm', upload_rfm_handler),
     path('passport/upload_fms', upload_fms_handler),
+    path('passport/rfm', RosFinMon.as_view())
 ]
