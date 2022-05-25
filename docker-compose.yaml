@@ -1,0 +1,14 @@
+version: "3.10"
+
+services:
+  redis:
+    image: redis
+    restart: always
+
+  black_passport:
+    restart: always
+    build:
+      context: ./black_passport
+    ports:
+      - '8500:8500'
+    command: [ 'python3', './black_passport/manage.py', 'runserver', '0.0.0.0:8500']
