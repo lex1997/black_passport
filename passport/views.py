@@ -1,5 +1,3 @@
-
-
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
@@ -27,18 +25,18 @@ class RosFinMon(APIView):
         """
         Вызывает проверку пользователя по реестру Росфинмониторинг по средством post запроса
         """
-        serilizer = TerroristSerializer(data=request.data)
-        serilizer.is_valid(raise_exception=True)
+        serializer = TerroristSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
         if check_person_rfm(request.data['lastname'],
                             request.data['name'],
                             request.data['middlename'],
                             request.data['birthday']):
-            result = 'не террорист'
+            result = 'True'
         else:
-            result = 'террорист'
+            result = 'False'
 
-        return Response({f'Результат проверки: Человек {result}'})
+        return Response({f'Result: {result}'})
 
 
 class FedMigServ(APIView):
@@ -46,12 +44,12 @@ class FedMigServ(APIView):
         '''
         Проверяет паспорт по базе ФМС(таблица FMS), посредством POST запроса
         '''
-        serilizer = PassportSerializer(data=request.data)
-        serilizer.is_valid(raise_exception=True)
+        serializer = PassportSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
         if check_person_fms(request.data['series'], request.data['number']):
-            result = 'действительный'
+            result = 'True'
         else:
-            result = 'недействительный'
+            result = 'False'
 
-        return Response({f'Результат проверки: Паспорт {result}'})
+        return Response({f'Result: {result}'})
