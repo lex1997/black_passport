@@ -82,7 +82,7 @@ DATABASES = {
         "USER": os.getenv("POSTGRES_USER", "rfmfms"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", "QWErty!)!)"),
         "HOST": os.getenv("POSTGRES_HOST", "localhost"),
-        "PORT": os.getenv("POSTGRES_PORT", 21997),
+        "PORT": os.getenv("POSTGRES_PORT", 5432),
         "DISABLE_SERVER_SIDE_CURSORS": True,
     }
 }
