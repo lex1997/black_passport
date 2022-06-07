@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-^qx6_msrsc0@f0i925p3yu%sq$-y(c^bk4lsj731-#mqe+c+h$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["blackpassport.datalab.fit", "localhost", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = ["blackpassport.datalab.fit.ru", "localhost"]
 
 
 # Application definition
@@ -57,8 +57,7 @@ ROOT_URLCONF = 'black_passport.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,28 +75,28 @@ WSGI_APPLICATION = 'black_passport.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#         "NAME": os.getenv("POSTGRES_DB", "rfmfms"),
-#         "USER": os.getenv("POSTGRES_USER", "rfmfms"),
-#         "PASSWORD": os.getenv("POSTGRES_PASSWORD", "QWErty!)!)"),
-#         "HOST": os.getenv("POSTGRES_HOST", "localhost"),
-#         "PORT": os.getenv("POSTGRES_PORT", 5432),
-#         "DISABLE_SERVER_SIDE_CURSORS": True,
-#     }
-# }
-# print(DATABASES)
 DATABASES = {
-     'default': {
-        'ENGINE':   'django.db.backends.postgresql_psycopg2',
-        'NAME':     'rfmfms',
-        'USER':     'black_flow',
-        'PASSWORD': 'a19971228',
-        'HOST':     '127.0.0.1',
-        'PORT':     '5432',
-     }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.getenv("POSTGRES_DB", "rfmfms"),
+        "USER": os.getenv("POSTGRES_USER", "rfmfms"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "QWErty!)!)"),
+        "HOST": os.getenv("POSTGRES_HOST", "localhost"),
+        "PORT": os.getenv("POSTGRES_PORT", 5432),
+        "DISABLE_SERVER_SIDE_CURSORS": True,
+    }
 }
+print(DATABASES)
+# DATABASES = {
+#      'default': {
+#         'ENGINE':   'django.db.backends.postgresql_psycopg2',
+#         'NAME':     'rfmfms',
+#         'USER':     'black_flow',
+#         'PASSWORD': 'a19971228',
+#         'HOST':     '127.0.0.1',
+#         'PORT':     '5432',
+#      }
+# }
 
 
 # Password validation
@@ -143,7 +142,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Celery settings
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379'
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

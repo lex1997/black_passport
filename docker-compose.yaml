@@ -1,4 +1,4 @@
-version: "3.3"
+version: "2.2"
 
 services:
   black_passport:
@@ -7,11 +7,13 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    command: bash -c "gunicorn black_passport.wsgi:application --bind 0.0.0.0:8500"
-
+    command: bash -c "
+      sh /black_passport/entrypoint.sh
+      && gunicorn black_passport.wsgi:application --bind 0.0.0.0:8500
+      "
     volumes:
-      - ./black_passport
-      - static_data:/black_passport/static
+      - ./:/black_passport/
+      - static_volume:/usr/local/lib/python3.8/site-packages/django/contrib/admin/static
     ports:
       - "8500:8500"
     env_file:
@@ -35,16 +37,45 @@ services:
     env_file:
       - .env.deploy
 
+  celery:
+    image: black_passport_black_passport
+    restart: always
+    command: bash -c "
+      celery -A black_passport worker -l INFO
+      "
+    volumes:
+      - ./black_passport/:/usr/src/app/
+    env_file:
+      - .env.deploy
+    depends_on:
+      - redis
+      - postgres
+
+  celery-beat:
+    image: black_passport_black_passport
+    restart: always
+    command: bash -c "
+      celery -A black_passport beat -l INFO
+      "
+    volumes:
+      - ./black_passport/:/usr/src/app/
+    env_file:
+      - .env.deploy
+    depends_on:
+      - redis
+      - celery
+
   nginx:
     image: nginx:latest
+    restart: always
     depends_on:
       - black_passport
     ports:
       - "50:50"
     volumes:
-      - static_data:/var/www/html/static
+      - static_volume:/var/www/html/static
       - ./nginx-conf.d:/etc/nginx/conf.d/default.conf
 
 volumes:
   pg_data:
-  static_data:
+  static_volume:
