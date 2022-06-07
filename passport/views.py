@@ -9,6 +9,15 @@ from passport.fms import upload_fms
 from passport.serializers import TerroristSerializer, PassportSerializer
 
 
+import datetime
+
+
+def send_hello():
+    time = datetime.datetime.now()
+    print('hello world:[{}]'.format(time))
+
+    
+
 @csrf_exempt
 def upload_rfm_handler(request):
     upload_list_rfm()

@@ -1,14 +1,50 @@
-version: "3.10"
+version: "3.3"
 
 services:
-  redis:
-    image: redis
-    restart: always
-
   black_passport:
+    container_name: black_passport
     restart: always
     build:
-      context: ./black_passport
+      context: ./
+      dockerfile: Dockerfile
+    command: bash -c "gunicorn black_passport.wsgi:application --bind 0.0.0.0:8500"
+
+    volumes:
+      - ./black_passport
+      - static_data:/black_passport/static
     ports:
-      - '8500:8500'
-    command: [ 'python3', './black_passport/manage.py', 'runserver', '0.0.0.0:8500']
+      - "8500:8500"
+    env_file:
+      - .env.deploy
+    depends_on:
+      - redis
+      - postgres
+
+  redis:
+    image: redis:latest
+    restart: always
+
+  postgres:
+    container_name: black_passport_postgres
+    restart: always
+    image: postgres:latest
+    volumes:
+      - pg_data:/var/lib/posgresql/data/
+    ports:
+      - "5500:5500"
+    env_file:
+      - .env.deploy
+
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - black_passport
+    ports:
+      - "50:50"
+    volumes:
+      - static_data:/var/www/html/static
+      - ./nginx-conf.d:/etc/nginx/conf.d/default.conf
+
+volumes:
+  pg_data:
+  static_data:
